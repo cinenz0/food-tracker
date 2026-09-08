@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "foods": [
+    {
+      "id": "peanut",
+      "name": "Pasta de amendoim (exemplo)",
+      "base": 100,
+      "unit": "g",
+      "kcal": 550,
+      "protein": 20,
+      "confidence": "estimate",
+      "source": "Exemplo de cadastro. Confira o rótulo da sua marca.",
+      "favorite": true
+    }
+  ],
+  "recipes": [],
+  "targets": [
+    {
+      "date": "2020-01-01",
+      "kcal": 2000,
+      "protein": 100
+    }
+  ],
+  "days": {}
+}

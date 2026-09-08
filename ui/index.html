@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="session" content="__SESSION__">
+  <title>Alimentação — seu diário</title>
+  <link rel="stylesheet" href="/app.css"><script src="/app.js" defer></script>
+</head>
+<body class="__DESKTOP__">
+  <header class="window-bar" aria-label="Janela do Food Tracker">
+    <div class="window-drag pywebview-drag-region"><span>Food Tracker</span></div>
+    <div class="window-actions">
+      <button data-window="minimize" aria-label="Minimizar janela" title="Minimizar"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+      <button data-window="maximize" aria-label="Maximizar ou restaurar janela" title="Maximizar / restaurar"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9" rx="1"/></svg></button>
+      <button data-window="close" aria-label="Fechar aplicativo" title="Fechar"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8"/></svg></button>
+    </div>
+  </header>
+  <aside class="sidebar">
+    <a class="brand" href="#today"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 5v8m5-8v8M5 9v4a6 6 0 0 0 6 6v9M25 5c-5 4-6 11 0 12v11M25 5v12"/></svg>Alimentação<span>Seu diário alimentar.</span></a>
+    <nav aria-label="Principal">
+      <button data-view="today" class="active">Diário</button>
+      <button data-view="history">Histórico</button>
+      <button data-view="foods">Meus alimentos</button>
+      <button data-view="recipes">Receitas</button>
+      <button data-view="settings">Metas e backup</button>
+    </nav>
+    <div class="sidebar-bottom"><span class="local-dot"></span>Salvo neste computador<p id="save-status">Carregando seu diário…</p><button id="quit" class="text-button">Encerrar aplicativo</button></div>
+  </aside>
+  <main id="main"><div class="loading">Abrindo seu diário…</div></main>
+  <aside id="editor" class="editor" hidden aria-label="Registro de alimentação"></aside>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">Confirmar ação</h2><p id="confirm-message"></p><div class="actions"><button value="cancel" class="secondary">Cancelar</button><button value="ok" class="primary">Confirmar</button></div></form></dialog>
+</body>
+</html>
