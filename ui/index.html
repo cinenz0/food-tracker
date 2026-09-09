@@ -1,10 +1,13 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="session" content="__SESSION__">
   <title>Alimentação — seu diário</title>
-  <link rel="stylesheet" href="/app.css"><script src="/app.js" defer></script>
+  <meta name="theme-color" content="#912e42"><meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/config.js" defer></script><script src="/model.js" defer></script><script src="/sync-core.js" defer></script><script src="/cloud.js" defer></script><script src="/app.js" defer></script><script src="/photo.js" defer></script>
 </head>
 <body class="__DESKTOP__">
   <header class="window-bar" aria-label="Janela do Food Tracker">
@@ -26,7 +29,7 @@
     </nav>
     <div class="sidebar-bottom"><span class="local-dot"></span>Salvo neste computador<p id="save-status">Carregando seu diário…</p><button id="quit" class="text-button">Encerrar aplicativo</button></div>
   </aside>
-  <main id="main"><div class="loading">Abrindo seu diário…</div></main>
+  <main id="main"><div class="loading">Abrindo seu diário…</div></main><button id="sync-indicator" class="sync-indicator" type="button" hidden aria-label="Ver sincronização"></button>
   <aside id="editor" class="editor" hidden aria-label="Registro de alimentação"></aside>
   <div id="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">Confirmar ação</h2><p id="confirm-message"></p><div class="actions"><button value="cancel" class="secondary">Cancelar</button><button value="ok" class="primary">Confirmar</button></div></form></dialog>

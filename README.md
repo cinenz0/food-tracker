@@ -1,6 +1,20 @@
 # Food Tracker
 
-Aplicativo de alimentação para Windows: refeições, calorias, proteína, receitas e metas. Janela própria em vermelho vinho, com controles personalizados. Diário offline e assistente Gemini opcional.
+Aplicativo pessoal de alimentação para iPhone e Windows: refeições, calorias, proteína, receitas, metas, sincronização e estimativas por foto. A versão móvel é uma aplicação web instalável pelo Safari; a versão Windows usa uma janela própria em vermelho vinho.
+
+## iPhone e sincronização
+
+A versão hospedada funciona no Safari e pode ser instalada pela opção **Compartilhar → Adicionar à Tela de Início**. Ela mantém uma cópia local do diário para consulta e registros manuais sem internet, sincronizando ao voltar à rede. O iPhone não garante sincronização contínua em segundo plano, então o envio ocorre ao abrir ou retornar ao aplicativo.
+
+O login é pessoal e o banco usa isolamento por usuário. Registros feitos em aparelhos diferentes são combinados por item. Quando o mesmo registro é alterado nos dois aparelhos, o aplicativo mostra as duas versões para você escolher, sem apagar mudanças silenciosamente.
+
+Consulte [cloud/DEPLOY.md](cloud/DEPLOY.md) para configurar Supabase, Cloudflare, migrar o diário atual e apontar o executável Windows para o mesmo endereço.
+
+## Registrar por foto
+
+No Diário, use **Registrar por foto**, tire ou escolha uma imagem e informe detalhes opcionais. A foto é reduzida e recodificada no aparelho antes do envio, removendo os metadados da imagem original. O Gemini identifica os alimentos e estima porções, calorias e proteína. Você pode ajustar cada quantidade, reaproveitar referências já cadastradas e só então registrar a refeição.
+
+A foto é enviada ao Google apenas quando você solicita a análise e não é guardada no banco ou no cache offline. A estimativa pode errar peso, óleo e ingredientes ocultos; o resultado sempre aparece para revisão. O app limita o uso a 30 consultas por dia e cinco segundos entre chamadas, além das cotas da chave Gemini.
 
 ## Instalar
 
@@ -24,13 +38,13 @@ Receitas somam os ingredientes e dividem pelo rendimento. Dias completos entram 
 
 ## Assistente Gemini
 
-Em **Metas e backup**, cole uma chave do Google AI Studio. O app usa Gemini 3.5 Flash-Lite sem pesquisa web e devolve uma estimativa curta, identificada como sem fonte verificada. A chave fica protegida pelo Windows DPAPI, fora dos backups alimentares. Só a descrição digitada é enviada ao Google; na faixa gratuita, esses dados podem melhorar os produtos Google.
+No modo local, em **Metas e backup**, cole uma chave do Google AI Studio. Na versão sincronizada, a chave fica como segredo no servidor e não chega ao navegador. O app usa Gemini 3.5 Flash-Lite sem pesquisa web e devolve estimativas curtas, identificadas como sem fonte verificada. Na faixa gratuita, fotos e descrições enviadas podem melhorar os produtos Google.
 
 Use projeto Free Tier sem faturamento se quiser manter o uso gratuito. O aplicativo não consegue verificar o plano do projeto e não ativa cobrança, repete automaticamente chamadas ou troca de provedor.
 
 ## Desenvolvimento
 
-Python 3.12+, HTML/CSS/JavaScript, SQLite, pywebview/WebView2 e PyInstaller.
+Python 3.12+, HTML/CSS/JavaScript, SQLite, pywebview/WebView2, PyInstaller, Cloudflare Workers e Supabase/PostgreSQL.
 
 ```powershell
 ./build.ps1
@@ -43,6 +57,9 @@ O build gera `dist/Food Tracker.exe`. Para desenvolvimento da janela nativa: `.v
 python -B -m unittest test_core -v
 Get-Content test_portions.js -Raw | node
 Get-Content ui/app.js -Raw | node --check
+npm test
+npm run test:database
+npm run build:cloud
 ```
 
 O pacote inclui apenas código, interface e um cadastro de exemplo. Diretórios de dados, chaves, backups e notas pessoais ficam fora do versionamento. O executável não possui assinatura digital de editor.

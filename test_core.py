@@ -73,6 +73,28 @@ class CoreTests(unittest.TestCase):
         response['steps'][0]['content'][0]['text'] = json.dumps(clarification)
         self.assertEqual(parse_response(response)['question'], clarification['question'])
 
+    def test_photo_estimate_is_transient_and_validated(self):
+        from photo_assistant import estimate_photo
+        assistant = NutritionAssistant(self.temp.name)
+        with self.assertRaises(AssistantError):
+            estimate_photo(assistant, {'image': {'mime_type': 'image/jpeg', 'data': 'not-base64'}})
+        assistant.path.write_bytes(b'encrypted-test-placeholder')
+        before = set(Path(self.temp.name).iterdir())
+        item = {'name': 'Arroz cozido', 'base': 150, 'unit': 'g', 'kcal': 195,
+                'protein': None, 'note': 'Porção estimada.'}
+        payload = {'status': 'estimate', 'question': '', 'items': [item]}
+        response = {'status': 'completed', 'steps': [{'type': 'model_output',
+                    'content': [{'type': 'text', 'text': json.dumps(payload)}]}]}
+        with patch('photo_assistant.protect', return_value=b'test-key'), patch('photo_assistant.urlopen', return_value=io.BytesIO(json.dumps(response).encode())) as call:
+            result = estimate_photo(assistant, {'description': 'Prato de teste',
+                        'image': {'mime_type': 'image/jpeg', 'data': '/9j/AA=='}})
+            self.assertEqual(result['items'][0]['kcal'], 195)
+            self.assertIsNone(result['items'][0]['protein'])
+            sent = json.loads(call.call_args.args[0].data)
+            self.assertFalse(sent['store'])
+            self.assertEqual(sent['input'][1]['type'], 'image')
+            self.assertEqual(set(Path(self.temp.name).iterdir()), before)
+
     def test_assistant_encrypted_key_payload_and_session_cache(self):
         assistant = NutritionAssistant(self.temp.name)
         with self.assertRaises(AssistantError):

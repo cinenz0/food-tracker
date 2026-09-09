@@ -31,7 +31,7 @@ def make_server(directory=None, port=0, desktop=False):
             self.send_header('Content-Length', str(len(data)))
             self.send_header('Cache-Control', 'no-store')
             self.send_header('X-Content-Type-Options', 'nosniff')
-            self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
+            self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
             self.end_headers()
             self.wfile.write(data)
 
@@ -53,13 +53,21 @@ def make_server(directory=None, port=0, desktop=False):
                 self.reply(200, store.read())
             elif path == '/api/ai/status':
                 self.reply(200, assistant.status())
-            elif path in ('/', '/app.css', '/app.js'):
+            elif path in ('/', '/index.html', '/app.css', '/app.js', '/config.js', '/model.js', '/sync-core.js', '/cloud.js', '/photo.js', '/sw.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'):
                 name = 'index.html' if path == '/' else path[1:]
+                if name.endswith('.png'):
+                    data = (ROOT / 'ui' / name).read_bytes()
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'image/png')
+                    self.send_header('Content-Length', str(len(data)))
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
                 content = (ROOT / 'ui' / name).read_text(encoding='utf-8')
-                if path == '/':
+                if path in ('/', '/index.html'):
                     content = content.replace('__SESSION__', token)
                     content = content.replace('__DESKTOP__', 'desktop' if desktop else '')
-                mime = {'index.html': 'text/html', 'app.css': 'text/css', 'app.js': 'text/javascript'}[name]
+                mime = 'text/javascript' if name.endswith('.js') else {'index.html': 'text/html', 'app.css': 'text/css', 'manifest.webmanifest': 'application/manifest+json'}[name]
                 self.reply(200, content, mime + '; charset=utf-8')
             else:
                 self.reply(404, {'error': 'Página não encontrada.'})
@@ -76,6 +84,9 @@ def make_server(directory=None, port=0, desktop=False):
                     self.reply(200, assistant.configure(payload.get('key')))
                 elif self.path == '/api/ai/remove':
                     self.reply(200, assistant.remove_key())
+                elif self.path == '/api/ai/photo':
+                    from photo_assistant import estimate_photo
+                    self.reply(200, estimate_photo(assistant, payload))
                 elif self.path == '/api/ai/estimate':
                     self.reply(200, assistant.estimate(payload.get('description')))
                 elif self.path in ('/api/save', '/api/restore'):

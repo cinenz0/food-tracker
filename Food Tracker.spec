@@ -4,7 +4,7 @@ from PyInstaller.utils.hooks import collect_data_files
 a = Analysis(['desktop.py'], pathex=[],
     binaries=[], datas=[('ui', 'ui'), ('seed.public.json', '.')]
     + collect_data_files('webview'),
-    hiddenimports=['webview.platforms.edgechromium', 'webview.platforms.winforms'],
+    hiddenimports=['webview.platforms.edgechromium', 'webview.platforms.winforms', 'photo_assistant'],
     hookspath=[], hooksconfig={}, runtime_hooks=[],
     excludes=['tkinter', 'PyQt5', 'PyQt6', 'PySide2', 'PySide6'], noarchive=False)
 pyz = PYZ(a.pure)

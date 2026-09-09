@@ -6,6 +6,7 @@ import os
 import sys
 import threading
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from app import make_server
 
@@ -18,6 +19,9 @@ class WindowControls:
     def __init__(self):
         self._window = None
         self._maximized = False
+
+    def close(self):
+        self._window.destroy()
 
     def minimize(self):
         self._window.minimize()
@@ -40,6 +44,8 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', type=Path, default=default_data_directory())
+    parser.add_argument('--local', action='store_true', help='Abrir a cópia local sem sincronização')
+    parser.add_argument('--cloud-url', help='Endereço HTTPS da versão sincronizada')
     parser.add_argument('--smoke-test', type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
     # One native window per data directory; a second launch brings it forward.
@@ -62,11 +68,21 @@ def main():
             user.ShowWindow(handle, 9)
             user.SetForegroundWindow(handle)
         return
+    cloud_url = args.cloud_url
+    cloud_config = args.data_dir.parent / 'cloud-settings.json'
+    if not cloud_url and cloud_config.exists():
+        cloud_url = json.loads(cloud_config.read_text(encoding='utf-8-sig')).get('url')
+    if args.local or args.smoke_test:
+        cloud_url = None
+    if cloud_url:
+        parsed = urlsplit(cloud_url)
+        if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment or parsed.path not in ('', '/'):
+            raise ValueError('Use apenas o endereço HTTPS inicial do seu Food Tracker.')
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('FoodTracker.Desktop')
     server = make_server(args.data_dir, desktop=True)
     controls = WindowControls()
     window = webview.create_window(
-        'Food Tracker', f'http://127.0.0.1:{server.server_port}',
+        'Food Tracker', cloud_url or f'http://127.0.0.1:{server.server_port}',
         js_api=controls, width=1320, height=900, min_size=(900, 650),
         frameless=True, easy_drag=False, background_color='#faf6f4',
     )
@@ -121,7 +137,7 @@ def main():
             window.destroy()
 
     try:
-        webview.start(smoke_test if args.smoke_test else None, gui='edgechromium', private_mode=True)
+        webview.start(smoke_test if args.smoke_test else None, gui='edgechromium', private_mode=not bool(cloud_url), storage_path=str(args.data_dir.parent / 'webview') if cloud_url else None)
     finally:
         server.shutdown()
         worker.join(timeout=5)

@@ -15,3 +15,8 @@ Alimentacao.md
 PRODUCT.md
 DESIGN.md
 seed.json
+
+.wrangler/
+node_modules/
+.dev.vars*
+cloud-settings.json
