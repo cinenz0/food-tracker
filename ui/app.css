@@ -35,6 +35,7 @@ body.desktop{padding-top:42px}
 .login-card{max-width:390px;margin:9vh auto;padding:24px 12px}.login-card h1{font-size:32px}.login-card p{line-height:1.6;color:var(--muted)}.login-card form{display:grid;gap:18px;margin:26px 0}.login-brand{font-size:20px;font-weight:650;color:var(--brand)!important}
 .signed-out .sidebar,.signed-out .sync-indicator{display:none!important}.signed-out main{margin:0}
 .cloud-mode:not(.desktop) #quit{display:none}.conflict-item{padding:20px 0;border-bottom:1px solid var(--line)}.conflict-item p{font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.iphone-install{display:grid;grid-template-columns:190px minmax(0,1fr);gap:26px;align-items:center;padding:20px;background:#f5e2e5;border-radius:12px}.iphone-qr{display:block;width:190px;height:190px;background:white;border:10px solid white;border-radius:8px}.iphone-install h3{font-size:17px;margin-bottom:10px}.iphone-install ol{margin:0 0 10px;padding-left:21px;color:var(--muted);font-size:13px;line-height:1.8}.iphone-install .settings-note{margin:8px 0}.iphone-address{display:inline-block;font-size:12px;overflow-wrap:anywhere;margin-top:5px}
 @media(max-width:760px){
  body{min-width:0;padding-bottom:calc(92px + env(safe-area-inset-bottom));overflow-x:hidden}
  main{margin:0;padding:calc(24px + env(safe-area-inset-top)) 20px 28px}
@@ -52,4 +53,5 @@ body.desktop{padding-top:42px}
  .history-summary{gap:14px;justify-content:space-between}.history-summary>div{flex:1}.history-summary strong{font-size:22px}.history-summary span{font-size:11px;line-height:1.4;display:block}table{font-size:12px;table-layout:fixed}td,th{padding:12px 4px;overflow-wrap:anywhere}.bar-cell,td:has(progress){display:none}th:last-child,td:last-child{width:49px}td button{padding:7px 3px;min-height:42px}
  .section{margin:24px 0;padding-top:22px}.actions{flex-wrap:wrap}#toast{bottom:calc(85px + env(safe-area-inset-bottom));width:calc(100% - 32px);max-width:450px;font-size:13px}dialog{width:calc(100% - 32px);max-height:80vh;padding:22px;overflow:auto}.sync-indicator{bottom:calc(65px + env(safe-area-inset-bottom));right:0;left:0;max-width:none;width:100%;border:0;border-top:1px solid var(--line);border-radius:0;padding:5px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .signed-out{padding-bottom:0}.signed-out main{padding:calc(32px + env(safe-area-inset-top)) 22px}.login-card{margin:4vh auto}.photo-pickers>*{flex:1}.ingredient{grid-template-columns:minmax(0,1fr) 78px 28px}
+ .iphone-install{grid-template-columns:1fr;text-align:center;padding:20px 16px}.iphone-qr{width:min(240px,100%);height:auto;margin:auto}.iphone-install ol{text-align:left;display:inline-block}.iphone-address{max-width:100%}
 }

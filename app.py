@@ -53,7 +53,7 @@ def make_server(directory=None, port=0, desktop=False):
                 self.reply(200, store.read())
             elif path == '/api/ai/status':
                 self.reply(200, assistant.status())
-            elif path in ('/', '/index.html', '/app.css', '/app.js', '/config.js', '/model.js', '/sync-core.js', '/cloud.js', '/photo.js', '/sw.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'):
+            elif path in ('/', '/index.html', '/app.css', '/app.js', '/config.js', '/model.js', '/sync-core.js', '/cloud.js', '/photo.js', '/sw.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/iphone-qr.svg'):
                 name = 'index.html' if path == '/' else path[1:]
                 if name.endswith('.png'):
                     data = (ROOT / 'ui' / name).read_bytes()
@@ -67,7 +67,7 @@ def make_server(directory=None, port=0, desktop=False):
                 if path in ('/', '/index.html'):
                     content = content.replace('__SESSION__', token)
                     content = content.replace('__DESKTOP__', 'desktop' if desktop else '')
-                mime = 'text/javascript' if name.endswith('.js') else {'index.html': 'text/html', 'app.css': 'text/css', 'manifest.webmanifest': 'application/manifest+json'}[name]
+                mime = 'text/javascript' if name.endswith('.js') else {'index.html': 'text/html', 'app.css': 'text/css', 'manifest.webmanifest': 'application/manifest+json', 'iphone-qr.svg': 'image/svg+xml'}[name]
                 self.reply(200, content, mime + '; charset=utf-8')
             else:
                 self.reply(404, {'error': 'Página não encontrada.'})

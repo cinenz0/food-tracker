@@ -4,7 +4,9 @@ Aplicativo pessoal de alimentação para iPhone e Windows: refeições, calorias
 
 ## iPhone e sincronização
 
-A versão hospedada funciona no Safari e pode ser instalada pela opção **Compartilhar → Adicionar à Tela de Início**. Ela mantém uma cópia local do diário para consulta e registros manuais sem internet, sincronizando ao voltar à rede. O iPhone não garante sincronização contínua em segundo plano, então o envio ocorre ao abrir ou retornar ao aplicativo.
+A versão hospedada funciona no Safari e pode ser instalada pela opção **Compartilhar → Adicionar à Tela de Início**. Em **Metas e backup → Levar para o iPhone**, o QR code abre o endereço correto sem precisar digitá-lo. Ela mantém uma cópia local do diário para consulta e registros manuais sem internet, sincronizando ao voltar à rede. O iPhone não garante sincronização contínua em segundo plano, então o envio ocorre ao abrir ou retornar ao aplicativo.
+
+Endereço desta instalação: [food-tracker.lorenzomancinelli05.workers.dev](https://food-tracker.lorenzomancinelli05.workers.dev/).
 
 O login é pessoal e o banco usa isolamento por usuário. Registros feitos em aparelhos diferentes são combinados por item. Quando o mesmo registro é alterado nos dois aparelhos, o aplicativo mostra as duas versões para você escolher, sem apagar mudanças silenciosamente.
 
